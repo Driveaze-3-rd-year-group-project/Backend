@@ -441,4 +441,32 @@ public class JobEntryServiceIMPL implements JobEntryService {
         }
         return response;
     }
+
+    @Override
+    public ResponseDTO getAllJobEntriesByUserId(Integer userId){
+        ResponseDTO response = new ResponseDTO();
+        try {
+            // Retrieve JobEntry entities by jobId
+
+            List<Object[]> jobEntryDetails = jobEntryRepo.findEntryWithTechnician(userId);
+//            List<JobEntry> jobEntries = jobEntryRepo.findByJobRegistry_JobId(jobId);;
+            if (!jobEntryDetails.isEmpty()){
+                response.setDetails(jobEntryDetails);
+                response.setStatusCode(200);
+                response.setMessage("Successful");
+            } else {
+                throw new OurException("No Job entries Found");
+            }
+        } catch (OurException e) {
+            response.setStatusCode(404);
+            response.setMessage(e.getMessage());
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage("Error occurred while retrieving job entries: " + e.getMessage());
+        }
+
+        return response;
+
+    }
+
 }

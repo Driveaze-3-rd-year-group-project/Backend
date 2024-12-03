@@ -57,4 +57,9 @@ public class JobEntryController {
         return ResponseEntity.ok(jobEntryService.getAllJobEntriesByJobId(jobId));
     }
 
+    @GetMapping("/get-all--entries-of-technician/{userId}")
+    public ResponseEntity<ResponseDTO> getAllJobEntriesbyUserId(@PathVariable Integer userId) {
+        return ResponseEntity.ok(jobEntryService.getAllJobEntriesByUserId(userId));
+    }
+
 }
