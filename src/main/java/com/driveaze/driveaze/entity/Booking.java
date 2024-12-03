@@ -27,6 +27,9 @@ public class Booking {
     @Column(name = "preferred_date")
     private LocalDate preferredDate;
 
+    @Column(name = "created_date")
+    private LocalDate createdDate;
+
     @Column(name = "preferred_time")
     private LocalTime preferredTime;
 
@@ -34,15 +37,17 @@ public class Booking {
     private Long customerId;
 
     public Booking() {
+
     }
 
-    public Booking(int bookingId, String vehicleNo, String brand, String model, int status, LocalDate preferredDate, LocalTime preferredTime, Long customerId) {
+    public Booking(int bookingId, String vehicleNo, String brand, String model, int status, LocalDate preferredDate, LocalDate createdDate, LocalTime preferredTime, Long customerId) {
         this.bookingId = bookingId;
         this.vehicleNo = vehicleNo;
         this.brand = brand;
         this.model = model;
         this.status = status;
         this.preferredDate = preferredDate;
+        this.createdDate = createdDate;
         this.preferredTime = preferredTime;
         this.customerId = customerId;
     }
@@ -78,6 +83,15 @@ public class Booking {
     public Long getCustomerId() {
         return customerId;
     }
+
+    public LocalDate getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
+    }
+
 
     public void setBookingId(int bookingId) {
         this.bookingId = bookingId;

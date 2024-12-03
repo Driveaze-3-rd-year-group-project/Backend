@@ -1,8 +1,7 @@
 package com.driveaze.driveaze.dto;
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
+
 public class BookingDTO {
     private int bookingId;
     private String vehicleNo;
@@ -11,12 +10,13 @@ public class BookingDTO {
     private int status = 0;;
     private LocalDate preferredDate;
     private LocalTime preferredTime;
+    private LocalDate createdDate;
     private Long customerId;
 
     public BookingDTO() {
     }
 
-    public BookingDTO(int bookingId, String vehicleNo, String brand, String model, int status, LocalDate preferredDate, LocalTime preferredTime, Long customerId) {
+    public BookingDTO(int bookingId, String vehicleNo, String brand, String model, int status, LocalDate preferredDate, LocalTime preferredTime, LocalDate currentDate, Long customerId) {
         this.bookingId = bookingId;
         this.vehicleNo = vehicleNo;
         this.brand = brand;
@@ -24,7 +24,16 @@ public class BookingDTO {
         this.status = status;
         this.preferredDate = preferredDate;
         this.preferredTime = preferredTime;
+        this.createdDate = currentDate;
         this.customerId = customerId;
+    }
+
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDate getCreatedDate() {
+        return createdDate;
     }
 
     public int getBookingId() {

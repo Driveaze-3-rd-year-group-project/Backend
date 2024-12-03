@@ -29,7 +29,7 @@ public class BookingServiceIMPL implements BookingService {
     @Override
     public ResponseDTO addBooking(BookingDTO bookingDTO, ResponseDTO userDetails) {
         ResponseDTO response = new ResponseDTO();
-        long max=3;
+        long max=8;
         try {
             // Ensure customerId is set in bookingDTO from userDetails if null
             if (bookingDTO.getCustomerId() == null) {
@@ -80,8 +80,10 @@ public class BookingServiceIMPL implements BookingService {
                 bookingDTO.getModel(),
                 bookingDTO.getStatus(),
                 bookingDTO.getPreferredDate(),
+                bookingDTO.getCreatedDate(),
                 bookingDTO.getPreferredTime(),
                 bookingDTO.getCustomerId()
+
         );
 
         booking.setCustomerId(userDetails.getOurUsers().getId());
