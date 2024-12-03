@@ -21,8 +21,8 @@ public class Booking {
     @Column(name = "model", length = 100)
     private String model;
 
-    @Column(name = "status", length = 100)
-    private String status = "waiting";
+    @Column(name = "status", length = 45)
+    private  int status = 0;
 
     @Column(name = "preferred_date")
     private LocalDate preferredDate;
@@ -36,7 +36,7 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(int bookingId, String vehicleNo, String brand, String model, String status, LocalDate preferredDate, LocalTime preferredTime, Long customerId) {
+    public Booking(int bookingId, String vehicleNo, String brand, String model, int status, LocalDate preferredDate, LocalTime preferredTime, Long customerId) {
         this.bookingId = bookingId;
         this.vehicleNo = vehicleNo;
         this.brand = brand;
@@ -63,7 +63,7 @@ public class Booking {
         return model;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
@@ -95,7 +95,7 @@ public class Booking {
         this.model = model;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

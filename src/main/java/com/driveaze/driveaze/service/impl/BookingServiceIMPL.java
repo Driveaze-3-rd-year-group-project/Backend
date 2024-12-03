@@ -8,6 +8,7 @@ import com.driveaze.driveaze.repository.BookingRepo;
 import com.driveaze.driveaze.repository.UsersRepo;
 import com.driveaze.driveaze.service.interfac.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,33 +27,60 @@ public class BookingServiceIMPL implements BookingService {
     private UsersRepo usersRepo;
 
     @Override
-    public ResponseDTO addBooking(BookingDTO bookingDTO, ResponseDTO userDetails){
-
+    public ResponseDTO addBooking(BookingDTO bookingDTO, ResponseDTO userDetails) {
         ResponseDTO response = new ResponseDTO();
 
         try {
+            // Ensure customerId is set in bookingDTO from userDetails if null
+            if (bookingDTO.getCustomerId() == null) {
+                bookingDTO.setCustomerId(userDetails.getOurUsers().getId());
+            }
 
-            Booking booking = new Booking(
-                    bookingDTO.getBookingId(),
+            // Check for duplicate booking using repository query
+            boolean duplicateExists = bookingRepo.existsByCustomerIdAndVehicleNoAndStatus(
+                    bookingDTO.getCustomerId(),
                     bookingDTO.getVehicleNo(),
-                    bookingDTO.getBrand(),
-                    bookingDTO.getModel(),
-                    bookingDTO.getStatus(),
-                    bookingDTO.getPreferredDate(),
-                    bookingDTO.getPreferredTime(),
-                    bookingDTO.getCustomerId()
+                    0 // Assuming 0 is the status for active booking
             );
 
-            booking.setCustomerId(userDetails.getOurUsers().getId());
-            bookingRepo.save(booking);
-            response.setStatusCode(200);
-            response.setMessage("Successfully added booking");
+            if (duplicateExists) {
+                response.setStatusCode(409);
+                response.setMessage("Booking already exists for the selected vehicle and customer.");
+            } else {
+                // Create and save the new booking
+                Booking booking = getBooking(bookingDTO, userDetails);
+                bookingRepo.save(booking);
 
-        }catch (Exception e) {
+                response.setStatusCode(200);
+                response.setMessage("Successfully added booking");
+            }
+        } catch (DataAccessException e) {
             response.setStatusCode(500);
-            response.setMessage("Error occured while adding booking: " + e.getMessage());
+            response.setMessage("Database error occurred while adding booking: " + e.getMessage());
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage("Unexpected error occurred while adding booking: " + e.getMessage());
         }
+
         return response;
+    }
+
+
+
+    private static Booking getBooking(BookingDTO bookingDTO, ResponseDTO userDetails) {
+        Booking booking = new Booking(
+                bookingDTO.getBookingId(),
+                bookingDTO.getVehicleNo(),
+                bookingDTO.getBrand(),
+                bookingDTO.getModel(),
+                bookingDTO.getStatus(),
+                bookingDTO.getPreferredDate(),
+                bookingDTO.getPreferredTime(),
+                bookingDTO.getCustomerId()
+        );
+
+        booking.setCustomerId(userDetails.getOurUsers().getId());
+        return booking;
     }
 
     @Override
