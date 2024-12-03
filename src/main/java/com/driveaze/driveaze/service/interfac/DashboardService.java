@@ -4,4 +4,9 @@ import com.driveaze.driveaze.dto.ResponseDTO;
 
 public interface DashboardService {
     ResponseDTO getSupervisorStatistics();
+
+    ResponseDTO getManagerStatistics();
+
+    ResponseDTO getReceptionistStatistics();
+
 }
