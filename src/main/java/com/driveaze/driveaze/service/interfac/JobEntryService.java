@@ -24,4 +24,6 @@ public interface JobEntryService {
 
     ResponseDTO getAllJobEntriesByJobId(Integer jobId);
 
+    ResponseDTO getAllJobEntriesByUserId(Integer userId);
+
 }
