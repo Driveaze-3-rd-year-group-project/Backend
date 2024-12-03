@@ -35,6 +35,8 @@ public class BookingServiceIMPL implements BookingService {
             if (bookingDTO.getCustomerId() == null) {
                 bookingDTO.setCustomerId(userDetails.getOurUsers().getId());
             }
+            System.out.println(bookingDTO.getPreferredDate());
+            long count = bookingRepo.countByPreferredDate(bookingDTO.getPreferredDate());
 
             // Check for duplicate booking using repository query
             boolean duplicateExists = bookingRepo.existsByCustomerIdAndVehicleNoAndStatus(
@@ -42,8 +44,10 @@ public class BookingServiceIMPL implements BookingService {
                     bookingDTO.getVehicleNo(),
                     0 // Assuming 0 is the status for active booking
             );
-
-            if (duplicateExists) {
+            if(count>8){
+                response.setStatusCode(300);
+                response.setMessage("Selected date has too many bookins, please select another date!");
+            } else if (duplicateExists) {
                 response.setStatusCode(409);
                 response.setMessage("Booking already exists for the selected vehicle and customer.");
             } else {
@@ -117,19 +121,6 @@ public class BookingServiceIMPL implements BookingService {
         try {
 
             List<Booking> bookings = bookingRepo.findAll();
-//            List<BookingDTO> bookingDTOList = new ArrayList<>();
-//            for (Booking booking: bookings){
-//                BookingDTO bookingDTO = new BookingDTO(
-//                        booking.getBookingId(),
-//                        booking.getVehicleNo(),
-//                        booking.getBrand(),
-//                        booking.getModel(),
-//                        booking.getStatus(),
-//                        booking.getPreferredDate(),
-//                        booking.getPreferredTime()
-//                );
-//                bookingDTOList.add(bookingDTO);
-//            }
             if (!bookings.isEmpty()){
                 response.setBookingList(bookings);
                 response.setStatusCode(200);
