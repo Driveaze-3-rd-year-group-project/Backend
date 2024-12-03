@@ -8,7 +8,7 @@ public class BookingDTO {
     private String vehicleNo;
     private String brand;
     private String model;
-    private String status = "waiting";;
+    private int status = 0;;
     private LocalDate preferredDate;
     private LocalTime preferredTime;
     private Long customerId;
@@ -16,7 +16,7 @@ public class BookingDTO {
     public BookingDTO() {
     }
 
-    public BookingDTO(int bookingId, String vehicleNo, String brand, String model, String status, LocalDate preferredDate, LocalTime preferredTime, Long customerId) {
+    public BookingDTO(int bookingId, String vehicleNo, String brand, String model, int status, LocalDate preferredDate, LocalTime preferredTime, Long customerId) {
         this.bookingId = bookingId;
         this.vehicleNo = vehicleNo;
         this.brand = brand;
@@ -43,7 +43,7 @@ public class BookingDTO {
         return model;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
@@ -75,7 +75,7 @@ public class BookingDTO {
         this.model = model;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
