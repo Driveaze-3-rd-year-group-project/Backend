@@ -22,5 +22,13 @@ public class DashboardController {
         return ResponseEntity.ok(dashboardService.getSupervisorStatistics());
     }
 
+    @GetMapping(path = "/man-statistic")
+    public ResponseEntity<ResponseDTO> getManagerStatistic(){
+        return ResponseEntity.ok(dashboardService.getManagerStatistics());
+    }
 
+    @GetMapping(path = "/recp-statistic")
+    public ResponseEntity<ResponseDTO> getReceptionistStatistic(){
+        return ResponseEntity.ok(dashboardService.getReceptionistStatistics());
+    }
 }
