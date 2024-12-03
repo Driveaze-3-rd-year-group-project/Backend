@@ -9,4 +9,6 @@ public interface DashboardService {
 
     ResponseDTO getReceptionistStatistics();
 
+    ResponseDTO getCustomerStatistics(int userId, String contack);
+
 }

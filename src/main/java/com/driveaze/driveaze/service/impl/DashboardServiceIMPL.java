@@ -28,6 +28,9 @@ public class DashboardServiceIMPL implements DashboardService {
     @Autowired
     private BillRepo billRepo;
 
+    @Autowired
+    private BookingRepo bookingRepo;
+
     @Override
     public ResponseDTO getSupervisorStatistics() {
         ResponseDTO response = new ResponseDTO();
@@ -237,6 +240,57 @@ public class DashboardServiceIMPL implements DashboardService {
         } catch (Exception e) {
             response.setStatusCode(500);
             response.setMessage("Error occurred while retrieving receptionist statistics: " + e.getMessage());
+        }
+
+        return response;
+    }
+
+    @Override
+    public ResponseDTO getCustomerStatistics(int userId, String contact) {
+        ResponseDTO response = new ResponseDTO();
+        try {
+            List<Booking> allbookings = bookingRepo.findAll();
+
+            List<CustomerVehicle> allVehicles = customerVehicleRepo.findAll();
+
+            int totalVehicle = allVehicles.size();
+            int customerVehicle=0;
+            int completed = 0;
+            int pending = 0;
+
+            for (Booking booking : allbookings) {
+                if (booking.getCustomerId() == userId && booking.getStatus() == 0) {
+                    pending++;
+                }
+
+                if (booking.getCustomerId() == userId && booking.getStatus() == 1) {
+                    completed++;
+                }
+            }
+
+            for (CustomerVehicle vehicle : allVehicles) {
+                if (Objects.equals(vehicle.getOwnerPhone(), contact)) {
+                    customerVehicle++;
+                }
+            }
+
+
+
+
+
+            Map<String, Integer> statistics = new HashMap<>();
+            statistics.put("completedBooking", completed);
+            statistics.put("pendingBooking", pending);
+            statistics.put("customerVehicle", customerVehicle);
+            statistics.put("totalVehicle", totalVehicle)
+
+
+            response.setDetails(statistics);
+            response.setStatusCode(200);
+            response.setMessage("Customer statistics retrieved successfully");
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage("Error occurred while retrieving customer statistics: " + e.getMessage());
         }
 
         return response;
