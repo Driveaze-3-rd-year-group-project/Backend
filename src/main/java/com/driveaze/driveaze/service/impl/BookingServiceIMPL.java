@@ -29,14 +29,15 @@ public class BookingServiceIMPL implements BookingService {
     @Override
     public ResponseDTO addBooking(BookingDTO bookingDTO, ResponseDTO userDetails) {
         ResponseDTO response = new ResponseDTO();
-
+        long max=8;
         try {
             // Ensure customerId is set in bookingDTO from userDetails if null
             if (bookingDTO.getCustomerId() == null) {
                 bookingDTO.setCustomerId(userDetails.getOurUsers().getId());
             }
-            System.out.println(bookingDTO.getPreferredDate());
+            System.out.println("DTO_date#######"+bookingDTO.getPreferredDate());
             long count = bookingRepo.countByPreferredDate(bookingDTO.getPreferredDate());
+            System.out.println(count);
 
             // Check for duplicate booking using repository query
             boolean duplicateExists = bookingRepo.existsByCustomerIdAndVehicleNoAndStatus(
@@ -44,9 +45,9 @@ public class BookingServiceIMPL implements BookingService {
                     bookingDTO.getVehicleNo(),
                     0 // Assuming 0 is the status for active booking
             );
-            if(count>8){
+            if(count>=max){
                 response.setStatusCode(300);
-                response.setMessage("Selected date has too many bookins, please select another date!");
+                response.setMessage("Selected date has too many bookings, please select another date!");
             } else if (duplicateExists) {
                 response.setStatusCode(409);
                 response.setMessage("Booking already exists for the selected vehicle and customer.");
@@ -79,8 +80,10 @@ public class BookingServiceIMPL implements BookingService {
                 bookingDTO.getModel(),
                 bookingDTO.getStatus(),
                 bookingDTO.getPreferredDate(),
+                bookingDTO.getCreatedDate(),
                 bookingDTO.getPreferredTime(),
                 bookingDTO.getCustomerId()
+
         );
 
         booking.setCustomerId(userDetails.getOurUsers().getId());
