@@ -18,7 +18,7 @@ public interface IUserManagementService {
     ResponseDTO getAllCustomers();
     ResponseDTO getUsersById(int userId);
     ResponseDTO deleteUser(int userId);
-    ResponseDTO updateUser(int userId, OurUsers updatedUser);
+    ResponseDTO updateUser(int userId, OurUserDTO updatedUser);
     ResponseDTO getMyInfo(String email);
 
 

@@ -47,6 +47,9 @@ public class OurUsers implements UserDetails {
     @Column(name = "is_verified_phone")
     private boolean isVerifiedPhone = false;
 
+    @Column(name = "profile_picture_url")
+    private String profilePictureUrl;
+
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {

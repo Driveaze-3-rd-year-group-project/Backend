@@ -17,8 +17,8 @@ import java.util.concurrent.TimeUnit;
 public class NotifyServiceIMPL implements NotifyService {
 
     private static final String API_URL = "https://app.notify.lk/api/v1/send";
-    private static final String API_KEY = "Yf0xsFxot4Nkp7MW3Oji";  // Replace with your actual API key
-    private static final String USER_ID = "28571";  // Replace with your actual user ID
+    private static final String API_KEY = "72T2naFFM33jTX9Nf7ho";  // Replace with your actual API key
+    private static final String USER_ID = "28576";  // Replace with your actual user ID
     private static final String SENDER_ID = "NotifyDEMO";  // Replace with your actual sender ID
     private static final Map<String, String> otpCache = new HashMap<>();  // Temporary cache to store OTPs for verification
     private static final long OTP_EXPIRATION_TIME = TimeUnit.MINUTES.toMillis(5);  // OTP expiration time (5 minutes)
