@@ -21,8 +21,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
 @Service
 public class UserManagementService implements IUserManagementService {
     @Autowired
@@ -335,7 +333,7 @@ public class UserManagementService implements IUserManagementService {
     }
 
     @Override
-    public ResponseDTO updateUser(int userId, OurUsers updatedUser) {
+    public ResponseDTO updateUser(int userId, OurUserDTO updatedUser) {
         ResponseDTO reqRes = new ResponseDTO();
 
         try {
@@ -345,6 +343,7 @@ public class UserManagementService implements IUserManagementService {
                 existingUser.setEmail(updatedUser.getEmail());
                 existingUser.setName(updatedUser.getName());
                 existingUser.setRole(updatedUser.getRole());
+                existingUser.setProfilePictureUrl(updatedUser.getProfilePictureUrl());
 
                 // Check if password is present in the request
                 if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
@@ -451,6 +450,7 @@ public class UserManagementService implements IUserManagementService {
                     existingUser.setName(ourUserDTO.getName());
                     existingUser.setContactNumber(ourUserDTO.getContactNumber());
                     existingUser.setRole(ourUserDTO.getRole());
+                    existingUser.setProfilePictureUrl(ourUserDTO.getProfilePictureUrl());
 
                     // Check if password is provided in the request
                     if (ourUserDTO.getPassword() != null && !ourUserDTO.getPassword().isEmpty()) {
