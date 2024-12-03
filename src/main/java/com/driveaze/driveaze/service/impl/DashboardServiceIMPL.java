@@ -253,7 +253,7 @@ public class DashboardServiceIMPL implements DashboardService {
 
             List<CustomerVehicle> allVehicles = customerVehicleRepo.findAll();
 
-            int totalVehicle = allVehicles.size();
+//            int totalVehicle = allVehicles.size();
             int customerVehicle=0;
             int completed = 0;
             int pending = 0;
@@ -282,7 +282,7 @@ public class DashboardServiceIMPL implements DashboardService {
             statistics.put("completedBooking", completed);
             statistics.put("pendingBooking", pending);
             statistics.put("customerVehicle", customerVehicle);
-            statistics.put("totalVehicle", totalVehicle)
+//            statistics.put("totalVehicle", totalVehicle);
 
 
             response.setDetails(statistics);
