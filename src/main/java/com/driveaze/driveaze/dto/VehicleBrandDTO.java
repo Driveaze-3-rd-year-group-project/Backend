@@ -13,4 +13,5 @@ public class VehicleBrandDTO {
     private Long brandId;
     private String brandName;
     private LocalDate registeredDate;
+    private String brandImage;
 }

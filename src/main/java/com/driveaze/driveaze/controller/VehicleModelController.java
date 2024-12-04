@@ -2,8 +2,11 @@ package com.driveaze.driveaze.controller;
 
 import com.driveaze.driveaze.dto.ResponseDTO;
 import com.driveaze.driveaze.dto.VehicleModelDTO;
+import com.driveaze.driveaze.entity.VehicleBrand;
+import com.driveaze.driveaze.entity.VehicleModel;
 import com.driveaze.driveaze.service.interfac.VehicleModelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,5 +47,10 @@ public class VehicleModelController {
     @GetMapping("/get-vehicle-model/{modelId}")
     public ResponseEntity<ResponseDTO> getVehicleModelById(@PathVariable Integer modelId) {
         return ResponseEntity.ok(vehicleModelService.getVehicleModelById(modelId));
+    }
+
+    @GetMapping("/paginationAndSort/{offset}")
+    public Page<VehicleModel> findModelsWithPaginationAndSorting(@PathVariable int offset) {
+        return vehicleModelService.findModelsWithPaginationAndSorting(offset);
     }
 }
