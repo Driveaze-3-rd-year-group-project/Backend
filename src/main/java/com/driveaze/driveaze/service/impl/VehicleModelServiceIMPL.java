@@ -3,11 +3,15 @@ package com.driveaze.driveaze.service.impl;
 import com.driveaze.driveaze.dto.ResponseDTO;
 import com.driveaze.driveaze.dto.VehicleModelDTO;
 import com.driveaze.driveaze.entity.CustomerVehicle;
+import com.driveaze.driveaze.entity.VehicleBrand;
 import com.driveaze.driveaze.entity.VehicleModel;
 import com.driveaze.driveaze.exception.OurException;
 import com.driveaze.driveaze.repository.VehicleModelRepo;
 import com.driveaze.driveaze.service.interfac.VehicleModelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -76,33 +80,41 @@ public class VehicleModelServiceIMPL implements VehicleModelService {
         ResponseDTO response = new ResponseDTO();
 
         try {
-            Optional<VehicleModel> existingVehicleModelByName = vehicleModelRepo.findByModelName(vehicleModelDTO.getModelName());
+            // Check if a vehicle model with the same name exists, excluding the current model
+            Optional<VehicleModel> existingVehicleModelByName =
+                    vehicleModelRepo.findByModelNameAndExcludeCurrent(vehicleModelDTO.getModelName(), modelId);
+
             if (existingVehicleModelByName.isPresent()) {
                 response.setStatusCode(400);
                 response.setMessage("Vehicle Model Already Exists!");
                 return response;
             }
 
+            // Find the existing vehicle model by ID
             VehicleModel vehicleModel = vehicleModelRepo.findById(modelId)
                     .orElseThrow(() -> new OurException("Vehicle model not found"));
 
+            // Update fields
             vehicleModel.setBrandId(vehicleModelDTO.getBrandId());
             vehicleModel.setModelName(vehicleModelDTO.getModelName());
             vehicleModel.setFuelType(vehicleModelDTO.getFuelType());
             vehicleModel.setRegisteredDate(vehicleModelDTO.getRegisteredDate());
 
+            // Save changes
             vehicleModelRepo.save(vehicleModel);
+
             response.setStatusCode(200);
             response.setMessage("Successfully updated vehicle model");
-        }catch (OurException e) {
+        } catch (OurException e) {
             response.setStatusCode(404);
             response.setMessage(e.getMessage());
-        }catch (Exception e) {
+        } catch (Exception e) {
             response.setStatusCode(500);
-            response.setMessage("Error occured while updating vehicle model: " + e.getMessage());
+            response.setMessage("Error occurred while updating vehicle model: " + e.getMessage());
         }
         return response;
     }
+
 
     @Override
     public ResponseDTO deleteVehicleModel(Integer modelId) {
@@ -170,6 +182,9 @@ public class VehicleModelServiceIMPL implements VehicleModelService {
         return response;
     }
 
-
+    @Override
+    public Page<VehicleModel> findModelsWithPaginationAndSorting(int offset) {
+        return vehicleModelRepo.findAll(PageRequest.of(offset, 5).withSort(Sort.by(Sort.Order.desc("registeredDate"))));
+    }
 
 }

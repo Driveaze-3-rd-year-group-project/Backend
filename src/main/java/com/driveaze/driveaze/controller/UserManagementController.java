@@ -100,6 +100,8 @@ public class UserManagementController {
             @RequestParam("userData") String userDataJson) {
 
         try {
+            validateFile(file);
+
             // Convert JSON string to OurUserDTO
             ObjectMapper mapper = new ObjectMapper();
             OurUserDTO ourUserDTO = mapper.readValue(userDataJson, OurUserDTO.class);

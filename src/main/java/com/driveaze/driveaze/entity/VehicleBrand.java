@@ -23,4 +23,7 @@ public class VehicleBrand {
 
     @Column(name = "registered_date", length =100, nullable = false)
     private LocalDate registeredDate;
+
+    @Column(name = "brand_image")
+    private String brandImage;
 }

@@ -2,11 +2,15 @@ package com.driveaze.driveaze.service.impl;
 
 import com.driveaze.driveaze.dto.ResponseDTO;
 import com.driveaze.driveaze.dto.VehicleBrandDTO;
+import com.driveaze.driveaze.entity.JobRegistry;
 import com.driveaze.driveaze.entity.VehicleBrand;
 import com.driveaze.driveaze.exception.OurException;
 import com.driveaze.driveaze.repository.VehicleBrandRepo;
 import com.driveaze.driveaze.service.interfac.VehicleBrandService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +30,8 @@ public class VehicleBrandServiceIMPL implements VehicleBrandService {
             VehicleBrand vehicleBrand = new VehicleBrand(
                     vehicleBrandDTO.getBrandId(),
                     vehicleBrandDTO.getBrandName(),
-                    vehicleBrandDTO.getRegisteredDate()
+                    vehicleBrandDTO.getRegisteredDate(),
+                    vehicleBrandDTO.getBrandImage()
             );
 
             if(!vehicleBrandRepo.existsByBrandName(vehicleBrand.getBrandName())){
@@ -84,6 +89,7 @@ public class VehicleBrandServiceIMPL implements VehicleBrandService {
 
             vehicleBrand.setBrandName(vehicleBrandDTO.getBrandName());
             vehicleBrand.setRegisteredDate(vehicleBrandDTO.getRegisteredDate());
+            vehicleBrand.setBrandImage(vehicleBrandDTO.getBrandImage());
 
             vehicleBrandRepo.save(vehicleBrand);
             response.setStatusCode(200);
@@ -137,4 +143,10 @@ public class VehicleBrandServiceIMPL implements VehicleBrandService {
         }
         return response;
     }
+
+    @Override
+    public Page<VehicleBrand> findBrandsWithPaginationAndSorting(int offset) {
+        return vehicleBrandRepo.findAll(PageRequest.of(offset, 5).withSort(Sort.by(Sort.Order.desc("registeredDate"))));
+    }
+
 }
